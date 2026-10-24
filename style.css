@@ -6,11 +6,27 @@
 
 }
 
+:root {
+
+    --space: #111329;
+    --cream: #fff0d6;
+
+    --coral: #ff806b;
+    --yellow: #ffc86b;
+    --mint: #a9dccb;
+
+    --lilac: #d7b8f3;
+    --ink: #29213c;
+
+}
+
 body{
 
-    background: #050505;
-    color: #d8d3c8;
-    font-family: Fredoka;
+    background: var(--space);
+    color: var(--cream);
+
+    font-family: 'Fredoka', sans-serif;
+    
     overflow: hidden;
 
 }
@@ -19,7 +35,15 @@ body{
 
     position: relative;
     width: 100vw;
+
     height: 100vh;
+    overflow: hidden;
+
+    background:
+        radial-gradient(ellipse at 75% 25%, #343052 0%, transparent 38%),
+        radial-gradient(ellipse at 20% 85%, #292344 0%, transparent 42%),
+        var(--space);
+    
 }
 
 
@@ -37,51 +61,214 @@ body{
 
     position: absolute;
     inset: 0;
-    padding: 24px;
+    padding: 25px;
+
     pointer-events: none;
+
 }
 
 header {
+    border-radius: 18px 18px 18px 5px;
+
+    box-shadow: 5px 5px 0 var(--coral);
     display: flex;
+    transform: rotate(-0.5deg);
     justify-content: space-between;
-    font-size: 12px;
-    letter-spacing: 3px;
-    color: #aaa49a;
+    gap: 16px;
+    align-items: center;
+    
+    background: var(--cream);
+    border: 3px solid var(--ink);
+
+    padding: 17px 22px;
+    color: var(--ink);
+
 }
+
+
+header span:first-child {
+
+    letter-spacing: -0.5px;
+
+    font-size: clamp(17px, 2.5vw, 27px);
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+}
+
+header span:last-child {
+
+    font-size: 11px;
+
+    border-radius: 10px;
+    padding: 8px 11px;
+    letter-spacing: 1px;
+
+    background: var(--lilac);
+
+    font-weight: 600;
+    text-align: right;
+    
+    border: 2px solid var(--ink);
+}
+
+
 
 .info {
 
     position: absolute;
-    top: 70px;
+    top: 115px;
+    max-width: calc(100% - 60px);
+    padding: 13px 19px;
 
-    font-size: 11px;
-    left: 24px;
-    letter-spacing: 2px;
-    color: #77736c;
+
+    background: var(--yellow);
+    
+    left: 30px;
+
+    border: 3px solid var(--ink);
+
+    transform: rotate(1deg);
+
+    border-radius: 14px 14px 5px 14px;
+    font-size: 14px;
+    box-shadow: 4px 4px 0 var(--ink);
+
+    font-weight: 600;
+    color: var(--ink);
+
+
+    letter-spacing: 1px;
+
 }
 
 .controls {
 
-    left: 24px;
+    bottom: 30px;
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 17px;
+    
     position: absolute;
-    gap: 8px;
+    transform: rotate(-1deg);
+
     display: flex;
-    bottom: 24px;
+    box-shadow: 5px 5px 0 var(--coral);
+
+    flex-wrap: wrap;
+
     pointer-events: auto;
+    gap: 12px;
+    left: 30px;
+
+
+    padding: 12px;
+
 }
 
 button {
-    background: #0b0b0b;
-    font-family: monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    border: 1px solid #33322f;
-    color: #aaa49a;
+
+    
+        border-radius: 12px 12px 12px 4px;
+     background: var(--coral);
+        color: var(--ink);
+
+        font-family: 'Fredoka', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        
+        padding: 12px 20px;
+        border: 3px solid var(--ink);
+        box-shadow: 3px 3px 0 var(--ink);
+
+    letter-spacing: 0.5px;
     cursor: pointer;
-    padding: 9px 14px;
+
+    
+    transition:
+
+        transform 150ms ease,
+        box-shadow 150ms ease,
+        background 150ms ease;
+
 }
 
+button:nth-child(2) {
+
+    background: var(--mint);
+
+    border-radius: 12px 4px 12px 12px;
+
+}
 button:hover {
-    border-color: #77736c;
-    color: #e0dbd0;
+
+    transform: translate(-2px, -2px) rotate(1deg);
+    background: var(--yellow);
+
+    box-shadow: 5px 5px 0 var(--ink);
+
+}
+button:active {
+
+    transform: translate(2px, 2px);
+
+    box-shadow: 1px 1px 0 var(--ink);
+
+}
+
+button:focus-visible {
+    
+    outline: 3px dashed var(--yellow);
+
+    outline-offset: 5px;
+
+}
+
+@media (max-width: 520px) {
+    .interface {
+
+        padding: 15px;
+    }
+
+    header {
+        padding: 13px;
+        border-radius: 14px 14px 14px 4px;
+    }
+
+    header span:last-child {
+        font-size: 9px;
+        padding: 6px;
+    }
+
+    .info {
+        top: 100px;
+        left: 20px;
+    }
+
+    .controls {
+        bottom: 20px;
+
+
+        left: 20px;
+        gap: 9px;
+        padding: 9px;
+    }
+
+    button {
+
+        padding: 10px 15px;
+    }
+
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    button {
+
+        transition: none;
+
+
+    }
 }
