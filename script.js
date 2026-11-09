@@ -3,20 +3,44 @@ const ctx = canvas.getContext("2d");
 let paused = false;
 
 let stars = []
-
-
 let selectedPlanet = null;
+let cameraZoom = 1;
+
+let cameraTargetX = 0;
+let cameraTargetY = 0;
+
+let cameraInitialized = false;
+
+const PLANET_VIEW_ZOOM = 8;
 
 const BASE_OUTER_ORBIT = 275;
 const BASE_SUN_RADIUS = 25;
+
 function resizeCanvas() {
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     updateSystemScale();
+
     createStars();
+
+    sun.x = canvas.width * 0.62;
+    sun.y = canvas.height * 0.52;
+
+    if (!cameraInitialized) {
+
+        cameraTargetX = sun.x;
+        cameraTargetY = sun.y;
+
+        cameraZoom = 1;
+
+    }
+
     drawSpace();
+
 }
+
 let systemScale = 1;
 
 function updateSystemScale() {
@@ -238,44 +262,63 @@ function createStars() {
 function drawSpace() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const nebula = ctx.createRadialGradient(
 
+    // Background
+    const nebula = ctx.createRadialGradient(
         canvas.width * 0.65,
         canvas.height * 0.55,
         10,
-
         canvas.width * 0.65,
-
-
         canvas.height * 0.55,
-
         canvas.width * 0.45
-    )
+    );
 
-    nebula.addColorStop(0, "rgba(100, 73, 135, 0.16)")
-    nebula.addColorStop(0.5, "rgba(58, 55, 105, 0.08)")
-
+    nebula.addColorStop(0, "rgba(100, 73, 135, 0.16)");
+    nebula.addColorStop(0.5, "rgba(58, 55, 105, 0.08)");
     nebula.addColorStop(1, "rgba(17, 19, 41, 0)");
 
     ctx.fillStyle = nebula;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Stars
     stars.forEach(star => {
 
+        ctx.beginPath();
 
-        ctx.beginPath()
+        ctx.arc(
+            star.x,
+            star.y,
+            star.radius,
+            0,
+            Math.PI * 2
+        );
 
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = star.color
+        ctx.fillStyle = star.color;
+        ctx.fill();
 
+    });
 
-        ctx.fill()
+    // Camera
+    ctx.save();
 
-    })
-    drawSolarSystem();  
-    drawPlanets()
+    ctx.translate(
+        canvas.width / 2,
+        canvas.height / 2
+    );
+
+    ctx.scale(cameraZoom, cameraZoom);
+
+    ctx.translate(
+        -cameraTargetX,
+        -cameraTargetY
+    );
+
+    drawSolarSystem();
+    drawPlanets();
+
+    ctx.restore();
 
 }
-
 const sun = {
      
     x: 0,
@@ -313,6 +356,30 @@ const planets = [
 
 
 ];
+
+function getPlanetWorldPosition(planet) {
+
+    const index = planets.indexOf(planet);
+
+    const orbitRadius = planet.orbit * systemScale;
+
+    const tilt = -0.12 + index * 0.035;
+    const y = orbitRadius * Math.sin(planet.angle) * 0.72;
+    const x = orbitRadius * Math.cos(planet.angle);
+
+    const tiltedX =
+        x * Math.cos(tilt)- y * Math.sin(tilt);
+    const tiltedY =
+        x * Math.sin(tilt) +y * Math.cos(tilt);
+    return {
+        x: sun.x + tiltedX,
+        y: sun.y + tiltedY
+    }
+}
+
+
+
+
 
 
 function drawSolarSystem() { 
@@ -443,6 +510,8 @@ function drawPlanets() {
             
             ctx.globalAlpha = 1;
         }
+
+
         ctx.save();
                 
         if (planet.name === "Earth") {
@@ -458,6 +527,8 @@ function drawPlanets() {
 
             ctx.fill()
         }
+
+
         if (planet === selectedPlanet) {
             ctx.beginPath();
             ctx.arc(
@@ -474,39 +545,91 @@ function drawPlanets() {
             ctx.lineWidth = 2;
 
             ctx.stroke()
-
-
         }
         
     })
+
+
+
+
 }
+
 
 
 let lastTime = 0;
 
 function animate(time = 0) {
 
-    const deltaTime = Math.min((time - lastTime) / 1000, 0.05);
-    lastTime = time;
-    if(!paused)
+    const deltaTime = Math.min(
+        (time - lastTime) / 1000,
+        0.05
+    );
 
-    {
+    lastTime = time;
+
+    if (!paused) {
+
         planets.forEach(planet => {
-        planet.angle += planet.speed * deltaTime;
-        planet.rotation += planet.rotationSpeed * deltaTime;
-        })
+
+            planet.angle += planet.speed * deltaTime;
+
+            planet.rotation +=
+                planet.rotationSpeed * deltaTime;
+
+        });
+
     }
+
+    sun.x = canvas.width * 0.62;
+    sun.y = canvas.height * 0.52;
+
+    let targetX = sun.x;
+    let targetY = sun.y
+
+    let targetZoom = 1
+
+    if (selectedPlanet){
+
+        const position = getPlanetWorldPosition(selectedPlanet);
+
+        targetX = position.x;
+        targetY = position.y;
+
+        targetZoom =PLANET_VIEW_ZOOM;
+
+    }
+
+    if (!cameraInitialized) {
+
+        cameraTargetX = targetX;
+        cameraTargetY = targetY;
+
+        cameraZoom = targetZoom;
+
+        cameraInitialized =true;
+
+    } else {
+
+        const smooth = 1 - Math.exp(-5 *deltaTime);
+
+        cameraTargetX +=
+            (targetX - cameraTargetX) * smooth;
+
+        cameraTargetY +=
+            (targetY - cameraTargetY) *smooth
+
+        cameraZoom +=
+            (targetZoom - cameraZoom) * smooth;
+
+    }
+
     drawSpace()
 
+    requestAnimationFrame(animate);
 
-    requestAnimationFrame(animate)
-
-
-  
 }
-
-
 const pauseButton = document.querySelector("#pause");
+const backButton = document.querySelector("#back");
 
 
 pauseButton.addEventListener("click", () => {
@@ -516,38 +639,82 @@ pauseButton.addEventListener("click", () => {
 
 })
 
+backButton.addEventListener("click", () => {
+
+    selectedPlanet = null;
+
+    updateInfoPanel();
+
+});
+
 
 canvas.addEventListener("click", event => {
+
+    if (selectedPlanet) return;
+
     const rect = canvas.getBoundingClientRect();
 
-    const mouseX = (event.clientX - rect.left) * canvas.width / rect.width;
-    const mouseY = (event.clientY - rect.top) * canvas.height / rect.height;
+    const mouseX =
+        (event.clientX - rect.left) *
+        canvas.width / rect.width;
+
+    const mouseY =
+        (event.clientY - rect.top) *
+        canvas.height / rect.height;
+
+    // Convert screen coordinates into world coordinates.
+    const worldMouseX =
+        (mouseX - canvas.width / 2) / cameraZoom +
+        cameraTargetX;
+
+    const worldMouseY =
+        (mouseY - canvas.height / 2) / cameraZoom +
+        cameraTargetY;
 
     selectedPlanet = [...planets].reverse().find(planet => {
-        const dx = mouseX - planet.screenX;
-        const dy = mouseY - planet.screenY;
 
-        return Math.hypot(dx, dy) < planet.radius + 15
+        const position = getPlanetWorldPosition(planet);
+
+        const dx = worldMouseX - position.x;
+        const dy = worldMouseY - position.y;
+
+        const hitRadius =
+            planet.radius * systemScale + 15;
+
+        return Math.hypot(dx, dy) < hitRadius;
+
     }) ?? null;
 
-    updateInfoPanel()
-})
+    updateInfoPanel();
+
+});
+
+
 
 function updateInfoPanel() {
+
     const panel = document.querySelector("#selected-planet");
 
     if (!selectedPlanet) {
+
         panel.textContent = "SYSTEM VIEW";
-        return
+        backButton.style.display = "none";
+
+        return;
+
     }
 
-    panel.textContent = selectedPlanet.name.toUpperCase()
+    panel.textContent = selectedPlanet.name.toUpperCase() + " // PLANET VIEW";
+
+    backButton.style.display = "block"
+
 }
 
 
 
+window.addEventListener("resize", resizeCanvas);
 
-window.addEventListener("resize", resizeCanvas)
+resizeCanvas();
 
-resizeCanvas(); 
-requestAnimationFrame(animate)
+requestAnimationFrame(animate);
+
