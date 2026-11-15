@@ -88,7 +88,7 @@ header {
 
 header span:first-child {
 
-    letter-spacing: -0.5px;
+    letter-spacing: 0.5px;
 
     font-size: clamp(17px, 2.5vw, 27px);
     font-weight: 700;
@@ -270,5 +270,177 @@ button:focus-visible {
         transition: none;
 
 
+    }
+}
+.planet-navigation {
+    left: 30px;
+    position: absolute;
+    top: 190px;
+
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    gap: 10px;
+
+    box-shadow: 4px 4px 0 var(--coral);
+    overflow-y: auto;
+    max-height: calc(100vh - 330px);
+
+    padding: 13px;
+
+    background: var(--cream);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    border-radius: 14px 14px 5px 14px;
+    pointer-events: auto;
+
+
+}
+
+
+.nav-heading {
+    letter-spacing: 1px;
+    font-size: 11px;
+    font-weight: 700;
+}
+#planet-list {
+    flex-direction: column;
+    display: flex;
+    gap: 8px;
+
+}
+
+.planet-item {
+    width: 100%;
+    padding: 9px 12px;
+
+    text-align: left;
+    background: var(--planet-color);
+
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.planet-item.active {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+}
+
+.interface > button,
+.planet-navigation {
+    pointer-events: auto;
+}
+
+.interface > .controls > button:nth-child(2) {
+    background: var(--mint);
+    border-radius: 12px 4px 12px 12px;
+}
+
+.controls {
+    z-index: 10;
+    pointer-events: auto;
+
+}
+
+*{
+    font-family: "BBH Bogle", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+}
+button{
+    font-family: "BBH Bogle", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-style: italic;
+}
+
+.planet-details {
+    position: absolute;
+    top: 190px;
+    right: 30px;
+
+    width: 270px;
+    padding: 18px;
+
+    background: var(--cream);
+    color: var(--ink);
+
+    border: 3px solid var(--ink);
+    border-radius: 16px 16px 5px 16px;
+
+    box-shadow: 5px 5px 0 var(--coral);
+
+    pointer-events: auto;
+    z-index: 5;
+}
+
+.planet-details[hidden] {
+    display: none;
+}
+
+.details-heading {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #806b91;
+}
+
+.planet-details h2 {
+    margin-top: 8px;
+    font-size: 27px;
+    text-transform: uppercase;
+}
+#detail-description {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.planet-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 2px dashed #c8bba9;
+}
+.planet-stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.planet-stats span {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #806b91;
+}
+.planet-stats strong {
+    font-size: 14px;
+}
+@media (max-width: 520px) {
+    .planet-details {
+        top: 160px;
+        right: 15px;
+        width: 190px;
+        padding: 12px;
+    }
+
+    .planet-details h2 {
+        font-size: 21px;
+    }
+
+    #detail-description {
+        font-size: 11px;
+    }
+
+    .planet-stats {
+        gap: 9px;
+        margin-top: 12px;
+    }
+
+    .planet-stats strong {
+        font-size: 12px;
     }
 }

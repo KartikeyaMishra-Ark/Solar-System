@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar System</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=BBH+Bogle&display=swap');
+    </style>
 </head>
 <body>
 
@@ -18,22 +21,54 @@
         <header>
                 
             <span>Solar System</span>
-            <span>Observatory // 01</span>
+            <span>Observatory</span>
 
         </header>
-        <div class="info">
+            <div class="info">
 
-            <span id="selected-planet">SYSTEM VIEW</span>
-        </div>
-        <div class="controls">
+                <span id="selected-planet">SYSTEM VIEW</span>
 
-            <button id="pause">PAUSE
+            </div>
+            <aside id="planet-details" class="planet-details" hidden>
+                <span class="details-heading">PLANETARY PROFILE</span>
+                <h2 id="detail-name"></h2>
+                <p id="detail-description"></p>
 
-            </button>
+                <div class="planet-stats">
+                    <div>
+                        <span>CLASSIFICATION</span>
+                        <strong id="detail-type"></strong>
+                    </div>
 
-            <button id="reset">RESET</button>
-            <button id="back" style="display: none;">BACK</button>
+                    <div>
+                        <span>FROM THE SUN</span>
+                        <strong id="detail-distance"></strong>
+                    </div>
 
+                    <div>
+                        <span>ORBITAL PERIOD</span>
+                        <strong id="detail-orbit"></strong>
+                    </div>
+
+                    <div>
+                        <span>ROTATION PERIOD</span>
+                        <strong id="detail-rotation"></strong>
+                    </div>
+                </div>
+            </aside>
+            <nav class="planet-navigation">
+
+                <span class="nav-heading">CELESTIAL BODIES</span>
+
+                <div id="planet-list"></div>
+
+            </nav>
+            <div class="controls">
+                <button id="pause">PAUSE</button>
+                <button id="reset">RESET</button>
+                <button id="back" style="display: none;">BACK</button>
+            </div>
+            
         </div>
     </div>
 </main>

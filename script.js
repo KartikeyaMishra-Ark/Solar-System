@@ -1,5 +1,6 @@
 const canvas = document.querySelector("#solar-system")
 const ctx = canvas.getContext("2d");
+const backButton = document.querySelector("#back");
 let paused = false;
 
 let stars = []
@@ -33,6 +34,68 @@ function updateSystemScale() {
         canvas.height * 0.38 / (BASE_OUTER_ORBIT * 0.72)
     );
 }
+const planetDetails = {
+
+    Mercury: {
+        description: "The smallest planet in our solar system. Its heavily cratered surface resembles Earth's Moon.",
+        type: "Terrestrial",
+        distance: "0.39 AU",
+        orbit: "88 Earth days",
+        rotation: "58.6 Earth days"
+    },
+    Venus: {
+    description: "A world of extreme heat, with a thick atmosphere dominated by carbon dioxide.",
+    type: "Terrestrial",
+    distance: "0.72 AU",
+    orbit: "225 Earth days",
+    rotation: "243 Earth days (retrograde)"
+    },
+    Earth: {
+        description: "Our home planet. The only known world with stable surface liquid water and life.",
+        type: "Terrestrial",
+        distance: "1 AU",
+        orbit: "365.25 days",
+        rotation: "23.9 hours"
+    },
+    Mars: {
+        description: "The Red Planet, known for its dusty landscape, enormous volcanoes and ancient river valleys.",
+        type: "Terrestrial",
+        distance: "1.52 AU",
+        orbit: "687 Earth days",
+        rotation: "24.6 hours"
+    },
+    Jupiter: {
+        description: "The largest planet in the solar system. Its atmosphere contains enormous storms, including the Great Red Spot.",
+        type: "Gas giant",
+        distance: "5.2 AU",
+        orbit: "11.86 Earth years",
+        rotation: "9.9 hours"
+    },
+    Saturn: {
+        description: "A gas giant famous for its spectacular ring system, made primarily of ice and rocky debris.",
+        type: "Gas giant",
+        distance: "9.58 AU",
+        orbit: "29.45 Earth years",
+        rotation: "About 10.7 hours"
+    },
+
+    Uranus: {
+        description: "An ice giant that rotates almost on its side, giving it unusually extreme seasons.",
+        type: "Ice giant",
+        distance: "19.2 AU",
+        orbit: "84 Earth years",
+        rotation: "17.2 hours (retrograde)"
+    },
+
+    Neptune: {
+        description: "A distant ice giant with powerful winds and a deep blue atmosphere.",
+        type: "Ice giant",
+        distance: "30.05 AU",
+        orbit: "165 Earth years",
+        rotation: "16.1 hours"
+    }
+
+};
 
 
 function drawPlanetSurface(planet, x, y) {
@@ -324,7 +387,37 @@ const planets = [
 
 
 ];
+const planetList = document.querySelector("#planet-list");
 
+function createPlanetList() {
+
+    planets.forEach(planet => {
+
+        const button = document.createElement("button");
+
+        button.classList.add("planet-item");
+        button.textContent = planet.name;
+
+        button.style.setProperty(
+            "--planet-color",
+            planet.color
+        );
+
+        button.addEventListener("click", () => {
+
+            selectedPlanet = planet;
+
+            updateInfoPanel();
+
+        })
+
+        planetList.appendChild(button);
+
+    })
+
+}
+
+createPlanetList();
 function getPlanetWorldPosition(planet) {
 
     const index = planets.indexOf(planet);
@@ -553,24 +646,7 @@ function animate(time = 0) {
     requestAnimationFrame(animate);
 
 }
-const pauseButton = document.querySelector("#pause");
-const backButton = document.querySelector("#back");
 
-
-pauseButton.addEventListener("click", () => {
-    paused = !paused
-
-    pauseButton.textContent = paused ? "RESUME" : "PAUSE";
-
-})
-
-backButton.addEventListener("click", () => {
-
-    selectedPlanet = null;
-
-    updateInfoPanel();
-
-});
 
 
 canvas.addEventListener("click", event => {
@@ -600,29 +676,53 @@ canvas.addEventListener("click", event => {
     updateInfoPanel();
 
 });
-
 function updateInfoPanel() {
 
     const panel = document.querySelector("#selected-planet");
+    const detailsPanel = document.querySelector("#planet-details");
 
-    if (!selectedPlanet) {
+    panel.textContent = selectedPlanet
+        ? selectedPlanet.name.toUpperCase()
+        : "SYSTEM VIEW";
 
-        panel.textContent = "SYSTEM VIEW";
+    backButton.style.display = selectedPlanet
+        ? "block"
+        : "none";
 
-        backButton.style.display = "none";
+    detailsPanel.hidden = !selectedPlanet;
 
-        return;
+    document.querySelectorAll(".planet-item").forEach(button => {
 
-    }
+        button.classList.toggle(
+            "active",
+            selectedPlanet !== null &&
+            button.textContent === selectedPlanet.name
+        );
 
-    panel.textContent =
-        selectedPlanet.name.toUpperCase();
+    });
+    if (!selectedPlanet) return;
 
-    backButton.style.display = "block";
+    const details = planetDetails[selectedPlanet.name];
+
+    document.querySelector("#detail-name").textContent =
+        selectedPlanet.name;
+
+    document.querySelector("#detail-description").textContent =
+        details.description;
+
+    document.querySelector("#detail-type").textContent =
+        details.type;
+
+    document.querySelector("#detail-distance").textContent =
+        details.distance;
+
+    document.querySelector("#detail-orbit").textContent =
+        details.orbit;
+
+    document.querySelector("#detail-rotation").textContent =
+        details.rotation;
 
 }
-
-
 
 window.addEventListener("resize", resizeCanvas);
 
