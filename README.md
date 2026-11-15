@@ -203,8 +203,9 @@ The Solar System remains the primary visual focus, while the navigation and info
 
 - Animation: requestAnimationFrame()
 
-Demo
+# Demo
 
+<a href="https://kartikeyamishra-ark.github.io/Solar-System/">Test the project!</a>
 
 # What I Learned
 
@@ -240,7 +241,7 @@ Demo
 
 # AI Declaration
 
-AI has been used to explain programming concepts, help debug issues, and guide me towards relevant documentation and learning resources throughout the development process.
+AI has been used to explain programming concepts, help debug issues, and guide me towards relevant documentation and learning resources throughout the development process. I also used the help of AI to make the intricate design of the planets to make them recognisable as it was very difficult to do it by myself.
 
 The implementation and development of the project have been part of my journey learning HTML, CSS, JavaScript, and Canvas.
 
