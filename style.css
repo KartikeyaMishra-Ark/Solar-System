@@ -444,3 +444,18 @@ button{
         font-size: 12px;
     }
 }
+
+.planet-details {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    top: auto;
+    width: 270px;
+    padding: 20px;
+    background: #f5e9d0;
+    border: 2px solid #2d241c;
+    border-radius: 12px;
+    z-index: 5;
+    pointer-events: auto;
+}
+

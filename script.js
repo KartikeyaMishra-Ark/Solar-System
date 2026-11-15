@@ -1,6 +1,8 @@
 const canvas = document.querySelector("#solar-system")
 const ctx = canvas.getContext("2d");
 const backButton = document.querySelector("#back");
+const pauseButton = document.querySelector("#pause")
+const resetButton = document.querySelector("#reset")
 let paused = false;
 
 let stars = []
@@ -727,6 +729,24 @@ function updateInfoPanel() {
 window.addEventListener("resize", resizeCanvas);
 
 resizeCanvas();
+pauseButton.addEventListener("click", () => {
+    paused = !paused;
+    pauseButton.textContent = paused ? "RESUME" : "PAUSE";
+})
 
+resetButton.addEventListener("click", () => {
+    planets.forEach(planet => {
+        planet.angle = Math.random() * Math.PI * 2;
+        planet.rotation = 0;
+    })
+
+    selectedPlanet = null;
+    updateInfoPanel();
+})
+
+backButton.addEventListener("click", () => {
+    selectedPlanet = null
+    updateInfoPanel();
+})
 requestAnimationFrame(animate);
 

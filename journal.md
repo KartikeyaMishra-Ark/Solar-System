@@ -28,3 +28,10 @@
 ## Removed all the elements of the zoom functional. Added the planet selector and info bar
 
 - Alas i have given up on making the zoom mechanics as well as the rotation mechanic. I am trying to make it a smooth and satisfying experience. I have added a planet selector panel where the user can easily select a planet if they don't want to track a revolving planet. I found that inconvinient myself so i added the panel. I also added an info panel which shows the details of the selected planet. The current problems are that the info panel kinda overlaps the orbits so it looks untidy and the pause, back and reset buttons have accidently lost their functionality when i was cleaning up the zoom and rotation mechanics from my code. I am planning toremove those three buttons and shift the info panel to the bottom. I have also shifted to Embassy! no more pixl. I will now journal after every session so i can log hours. Sorry for not having hours before this i cannot see hours in my journals copied from the pixl website.
+
+
+# 15-11-2026  ~15min
+
+# Moved the info panel a little lower and added back the functionalities of the bacl, reset and pause buttons.
+
+- just one quick journal to end the project. i am finally done with this after so much procrastination i did this much in a weekend during stardance and highseas. anyway i will finally ship this to embassy i really hope to get games for the xbox i got from stardance. i tried to the change the colour of space from purpke to black but relised i made the nebula in javascript so i decided its good as it is.
